@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Mirrored from in.integracommerce.com.br/Home by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 26 Apr 2025 19:00:25 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Integra API</title>
+
+    <script src="scripts/jquery-2.1.3.min.js"></script>
+
+    <script src="scripts/jquery-2.1.3.min.js"></script>
+    <link href="content/bootstrap.css" rel="stylesheet" />
+    <link href="content/Site.css" rel="stylesheet" />
+    <script src="scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <link href="content/animate.css" rel="stylesheet" />
+</head>
+<body>
+    <header id="intgraApi_header">
+        <nav class="navbar navbar-default">
+            <div class="row">
+                <div class="col-lg-10 col-lg-offset-1">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#integraApi_navbar-collapse" aria-expanded="false">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand intgraApi_Header_logo" href="Home.html">
+                                <img alt="Brand" src="content/images/logoMagazineMkp.png">
+                            </a>
+                        </div>
+                        <div class="collapse navbar-collapse" id="integraApi_navbar-collapse">
+                            <ul class="nav navbar-nav navbar-right">
+                                <li><a href="About/Api.html">Sobre a API</a></li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Documentação <span class="caret"></span></a>
+                                    <ul class="dropdown-menu dropdown-menu-left">
+                                        <li><a href="Documentation/Authentication.html">Autenticação</a></li>
+                                        <li><a href="Documentation/Resources.html">Recursos</a></li>
+                                        <li><a href="Documentation/Patterns.html">Padrões e Modelos</a></li>
+                                        <li><a href="Documentation/Orders.html">Pedidos</a></li>
+                                        <li><a href="https://integracomerce.blob.core.windows.net/documents-apiin/documentacao-API-Integra-versao.pdf" target="_blank">Download Documentação</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="swagger/index.html" target="_blank">API Explorer</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+    <div class="container">
+        
+
+<!-- Carrossel de imagens -->
+<link rel="stylesheet" href="content/owl.carousel.css">
+<link rel="stylesheet" href="content/owl.theme.css">
+<script src="scripts/owl.carousel.min.js"></script>
+
+<style>
+    .owl-carousel .item {
+        height: 100px;
+    }
+
+        .owl-carousel .item img {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+        }
+</style>
+
+<script>
+    $(document).ready(function () {
+
+        $("#mktpCarousel").owlCarousel({
+            autoPlay: 3000,
+            pagination: false,
+            itemsMobile: [480, 2]
+        });
+
+    });
+</script>
+
+<div id="integraApi_home">
+    <div id="bannerHome">
+        <img src="content/images/astronautaIntegrav2.jpg" />
+        <h1><span>&#60;&#47;</span>developers<span>&#62;</span></h1>
+        <p>A API do Magalu Marketplace foi criada para automatizar e simplificar o fluxo de informações entre parceiros e nossa plataforma. Ela é utilizada para criar todo o cadastro necessário para expor e vender os produtos nos maiores marketplaces do mercado, bem como receber e processar os pedidos aprovados a serem enviados para o cliente.</p>
+    </div>
+    <div class="row" id="marketIntegra">
+
+        <div class="row" id="fastLinks">
+            <div class="col-sm-offset-2 col-sm-8">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <a href="swagger/index.html" target="_blank">
+                            <div class="boxLink text-center boxLinkM">
+                                <p style="min-height:50px;">API Explorer</p>
+                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-sm-3">
+                        <a href="Documentation/Resources/index.html#sandbox">
+                            <div class="boxLink text-center boxLinkM">
+                                <p style="min-height:50px;">Sandbox</p>
+                                <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-sm-3">
+                        <a href="Documentation/Resources/index.html#recursosDisp">
+                            <div class="boxLink text-center boxLinkM">
+                                <p style="min-height:50px;">Recursos</p>
+                                <span class="glyphicon glyphicon-folder-close" aria-hidden="true"></span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-sm-3">
+                        <a href="Documentation/Patterns.html">
+                            <div class="boxLink text-center boxLinkM">
+                                <p style="min-height:50px;">Padrões</p>
+                                <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <div id="int-msg" class="affix" style="z-index:900; left:25px; bottom:7px; width:96%;"></div>
+    </div>
+
+    <style>
+        #subscribeButton {
+            margin: 18px 0;
+        }
+
+            #subscribeButton a {
+                padding: 0 !important;
+                color: #fff;
+            }
+
+        @media screen and (max-width: 825px) {
+            #subscribeButton {
+                margin: 0 15px 18px;
+            }
+        }
+    </style>
+
+    <script src="scripts/bootstrap.min.js"></script>
+    <script src="scripts/modernizr-2.6.2.js"></script>
+    <script>
+        function OnSuccessFormContact(response) {
+            console.log("OnSuccessFormContact");
+            setTimeout(function () {
+                $("#formResponse > .boxLoader").css("display", "none");
+                $("#formResponse > .boxRespostaSucesso").css("display", "block");
+            }, 3000);
+        }
+
+
+
+        function OnFailureFormContact(response) {
+            console.log("OnFailureFormContact");
+            $("#formResponse > .boxLoader").css("display", "none");
+            $("#formResponse").css("display", "none");
+            $("#formContatos").css("display", "block");
+
+        }
+
+        function OnBeginFormContact() {
+            console.log("OnBeginFormContact");
+            $("#contactForm").css("display", "none");
+            $("#formResponse").css("display", "block");
+            $("#formResponse > .boxLoader").css("display", "block");
+        }
+
+        function showMessageData(data, type) {
+            var randowClass = Math.floor(Math.random() * 100);
+            $("#int-msg").append('<div style=" box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23); border: none; height: 100px; font-size: 18px; margin-top: 10px; display:none;" class="intg-animated intg-slideInLeft intg-msg-data-' + randowClass + ' alert alert-dismissable text-center mb0 ' + type + '"><strong><span id="resp-int-msg-Dest"></strong></span></div>');
+            $(".intg-msg-data-" + randowClass + " #resp-int-msg-Dest").empty().html(data);
+            $(".intg-msg-data-" + randowClass).fadeIn(300);
+            setTimeout(function () {
+                //Mensagem
+                $(".intg-msg-data-" + randowClass).fadeOut("slow", function () {
+                    $(".intg-msg-data-" + randowClass).remove();
+                });
+            }, 6000);
+        }
+
+    </script>
+</body>
+
+<!-- Mirrored from in.integracommerce.com.br/Home by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 26 Apr 2025 19:00:26 GMT -->
+</html>

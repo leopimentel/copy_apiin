@@ -1,0 +1,540 @@
+﻿@import url(https://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,600,700);
+/*Shared Layout*/
+html {
+      height: 100%!important;
+    }
+body{
+    font-family: 'Titillium Web', sans-serif;
+    background: #FFF;
+    min-height: 100%!important;
+      display: flex!important;
+      flex-direction: column!important;
+}
+
+.spacePat{
+    margin-top:50px;
+}
+.spacePat25{
+    margin-top:25px;
+}
+.spacePat10{
+    margin-top:10px;
+}
+#intgraApi_header .navbar{
+    background:#FFF;
+    border-bottom:none;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+#integraApi_navbar-collapse > ul > li > a{
+    padding-top: 25px;
+    padding-bottom: 25px;
+    font-size:16px;
+    font-weight:500;
+}
+.intgraApi_Header_logo{
+   padding:0px 0px 0px 0px;
+   margin-top:8px;
+}
+
+.intgraApi_Header_logo img{
+    height:100%;
+}
+
+#integraApi_navbar-collapse > ul > li:hover > a{
+    font-weight:600;
+}
+.navbar-default .navbar-nav > .active > a{
+    background:#f2f2f2;
+}
+
+#intgraApi_header .navbar-header button{
+    border:none;
+    margin-top:13px;
+}
+
+#intgraApi_header .navbar-header button:hover,
+#intgraApi_header .navbar-header button:focus{
+    background:#f2f2f2;
+}
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .open > a:focus,
+.dropdown-menu > li > a:hover {
+    color: #FFF;
+    background: #0086FF;
+}
+
+#integraApi_navbar-collapse .dropdown > ul{
+    background:#FFF;
+    border:none;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    margin-top:2px;
+}
+
+#integraApi_navbar-collapse .dropdown > ul > li a{
+    font-size:16px;
+    font-weight:500;
+}
+
+#intgraApi_header > nav > div{
+    margin-left:0px;
+    margin-right:0px;
+}
+.container{
+ flex: 1!important;
+ width:100%;
+ padding:0px;
+}
+.footer {
+  padding: 20px;
+  background:#e99a22;  
+}
+.txtFooter{
+  color:#FFF;
+  font-weight:100;
+  margin-bottom:20px;
+}
+.txtFooter h4{
+  color:#FFF;
+  font-weight:600;
+}
+.txtFooter p{
+  color:#FFF;
+  margin-top:-5px;
+}
+.txtFooter a{
+  text-decoration:none;
+  color:#FFF;
+  font-weight:900;
+}
+#contactForm {
+  color:#fff;
+}
+
+.control-label{
+  margin-top:20px;
+}
+#contactForm input{
+  border:none;
+}
+
+#contactForm .btn-default{
+  margin-top:20px;
+  margin-left:15px;
+  background:#fff;
+}
+@media screen and (max-width: 768px) {
+    .intgraApi_Header_logo{
+       padding:0px 0px 10px 20px;
+       margin-top:5px;
+    }
+    #integraApi_navbar-collapse .dropdown > ul{
+        background:#f8f8f8;
+        border:none;
+        box-shadow: none;
+        margin-top:2px;
+    }
+}
+
+/*End shared Layout*/
+
+/*Home API*/
+
+
+
+
+#bannerHome{
+   width:100%;
+   height: 40vh;
+   overflow: hidden;
+   margin-top:-20px;
+   position:relative;
+}
+
+#bannerHome img{
+   object-fit: cover;
+   width: 100%;
+   height: 100%;
+   object-position: 0% 0%;
+
+}
+
+#bannerHome h1{
+  position:absolute;
+  top:0px;
+  margin:0 auto;
+  color:#fff;
+  font-weight:100;
+  font-size:50px;
+  left:50%;
+  margin-left:-160px;
+  margin-top:60px;
+}
+#bannerHome h1 span{
+  color:#e99a22;
+}
+
+#bannerHome p{
+  position:absolute;
+  top:0px;
+  color:#FFF;
+  max-width:900px;
+  text-align:center;
+  font-size:16px;
+  margin-top:150px;
+  left:50%;
+  margin-left:-450px;
+}
+
+#marketIntegra{
+  margin-top:30px;
+  margin-bottom:30px;
+  margin-right:10px;
+  margin-left:10px;
+}
+
+#marketIntegra p {
+  font-size:18px;
+  letter-spacing:2px;
+  margin-top:23px;
+}
+
+#fastLinks {
+  margin-top:60px;
+  margin-bottom:80px;
+}
+
+#fastLinks .boxLink{
+  border:1px solid #ccc;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  color:#555;
+  padding:30px 0px 50px 0px;
+}
+#fastLinks .boxLink p{
+  font-size:18px;
+}
+
+#fastLinks .boxLink span{
+  font-size:40px;
+  margin-top:20px;
+
+}
+
+.row{
+    margin-left:0px;
+    margin-right:0px;
+}
+#fastLinks .col-sm-3{
+    margin-top:20px;
+}
+
+#fastLinks a{
+    text-decoration:none;
+    transition:0.3s;
+}
+#fastLinks a > .boxLink p,
+#fastLinks a > .boxLink span {
+    transition:0.3s;
+
+}
+#fastLinks a:hover > .boxLink p {
+    font-size: 22px;
+}
+#fastLinks a:hover > .boxLink span{
+    font-size: 29px;
+}
+
+
+@media screen and (max-width: 900px) {
+    #bannerHome p{
+        max-width:600px;     
+        margin-left:-300px;
+    }
+    #fastLinks a > .boxLinkM {
+        padding: 27px 0px 27px 0px;
+    }
+
+}
+@media screen and (max-width: 768px) {
+    #bannerHome p{
+      max-width:100%;     
+      margin-left:10px;
+     margin-right:10px;
+     left:0%;
+    }
+    #fastLinks .col-sm-3{
+        margin:10px;
+    }
+}
+/*END Home API*/
+
+
+/*Sobre o Integra*/
+
+#sobreIntegra #bannerHome{  
+   height: 20vh;
+}
+
+#sobreIntegra #bannerHome img{
+   object-fit: cover;
+   width: 150%;
+   height: 100%;
+   object-position: 0% 0%;
+}
+
+#sobreIntegra #bannerHome h1{
+  font-size:40px;
+  margin-left:-250px;
+  margin-top:70px;
+}
+
+#sobreIntegra p{
+    font-size:19px;
+    text-indent:40px;
+}
+
+.parttnerImg{
+    background:#fefefe;
+    padding:50px;
+   
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+     margin-top:10px;
+}
+
+.parttnerImg img{
+     margin:0 auto;
+}
+
+#sobreIntegra .kkdodo{
+    background:#FFF;
+}
+
+@media screen and (max-width: 1530px) {
+    .parttnerImg {
+        padding:20px;
+    }
+}
+
+@media screen and (max-width: 512px) {
+    #sobreIntegra #bannerHome h1{
+      font-size:40px;
+      margin-left:-140px;
+      margin-top:50px;
+    }
+}
+
+
+@media screen and (max-width: 313px) {
+    #sobreIntegra #bannerHome h1{
+      font-size:40px;
+      margin-left:-100px;
+      margin-top:25px;
+    }
+}
+
+/*Sobre API*/
+#sobreAPI #bannerHome{  
+   height: 20vh;
+}
+
+#sobreAPI #bannerHome img{
+   object-fit: cover;
+   width: 100%;
+   height: 100%;
+   object-position: 0% 0%;
+}
+
+#sobreAPI #bannerHome h1{
+  font-size:40px;
+  margin-left:-150px;
+  margin-top:70px;
+}
+
+#sobreAPI p{
+    font-size:19px;
+    text-indent:40px;
+}
+
+
+
+/*Autenticação*/
+
+#integraAuth #bannerHome{  
+   height: 20vh;
+}
+
+#integraAuth #bannerHome img{
+   object-fit: cover;
+   width: 100%;
+   height: 100%;
+   object-position: 0% 0%;
+}
+
+#integraAuth #bannerHome h1{
+  font-size:40px;
+  margin-left:-150px;
+  margin-top:70px;
+}
+
+#integraAuth p{
+    font-size:18px;
+    text-indent:0px;
+}
+
+
+#integraAuth ol li{
+    font-size:17px;
+}
+
+pre{
+    background:#555;
+    border:none;
+    color:#fff;
+    text-align:left;
+    padding:20px;
+    font-size:13px;
+}
+
+
+
+/*integraResources*/
+
+#integraResources #bannerHome{  
+   height: 20vh;
+}
+
+#integraResources #bannerHome img{
+   object-fit: cover;
+   width: 100%;
+   height: 100%;
+   object-position: 0% 0%;
+}
+
+#integraResources #bannerHome h1{
+  font-size:40px;
+  margin-left:-150px;
+  margin-top:70px;
+}
+
+#integraResources p{
+    font-size:17px;
+    text-indent:20px;
+}
+
+
+#integraResources ol li{
+    font-size:17px;
+}
+
+
+#integraResources  .imgFluxoNormal{
+     margin:20px auto;
+}
+
+
+/*Padroes*/
+
+
+#integraPattern #bannerHome{  
+   height: 20vh;
+}
+
+#integraPattern #bannerHome img{
+   object-fit: cover;
+   width: 100%;
+   height: 100%;
+   object-position: 0% 0%;
+}
+
+#integraPattern #bannerHome h1{
+  font-size:40px;
+  margin-left:-150px;
+  margin-top:70px;
+}
+
+#integraPattern p{
+    font-size:17px;
+    text-indent:20px;
+}
+
+
+#integraPattern ol li{
+    font-size:17px;
+}
+
+
+#integraPattern  .imgFluxoNormal{
+     margin:20px auto;
+}
+
+
+
+.int_patt_fixed{
+    position:fixed;
+    width:300px;
+}
+
+
+@media (min-width: 768px) {
+  .sidebar-nav .navbar .navbar-collapse {
+    padding: 0;
+    max-height: none;
+  }
+  .sidebar-nav .navbar ul {
+    float: none;
+    display: block;
+  }
+  .sidebar-nav .navbar li {
+    float: none;
+    display: block;
+  }
+  .sidebar-nav .navbar li a {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+}
+
+@media (min-width: 767px) { 
+    #navigation{
+        position: fixed;
+        width:15%;
+        z-index:1;
+        font-weight:600;
+        font-size:15px
+    }       
+}
+
+.fix-menu{
+    top:25px;
+}
+
+/* patterns */
+.nm{
+    margin:0;
+}
+
+.fsize14{
+    font-size:14px!important;
+}
+
+.inlineBlock{
+    display:inline-block;
+}
+
+.nowrap{
+    white-space: nowrap;
+}
+
+.bold{
+    font-weight:bold;
+}
+
+@media screen and (max-width:671px){
+    .divisionBar{
+        display:none;
+    }
+}

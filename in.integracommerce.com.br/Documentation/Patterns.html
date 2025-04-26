@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Mirrored from in.integracommerce.com.br/Documentation/Patterns by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 26 Apr 2025 19:00:30 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patterns - Integra API</title>
+
+    <script src="../scripts/jquery-2.1.3.min.js"></script>
+
+    <script src="../scripts/jquery-2.1.3.min.js"></script>
+    <link href="../content/bootstrap.css" rel="stylesheet" />
+    <link href="../content/Site.css" rel="stylesheet" />
+    <script src="../scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <link href="../content/animate.css" rel="stylesheet" />
+</head>
+<body>
+    <header id="intgraApi_header">
+        <nav class="navbar navbar-default">
+            <div class="row">
+                <div class="col-lg-10 col-lg-offset-1">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#integraApi_navbar-collapse" aria-expanded="false">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand intgraApi_Header_logo" href="../Home.html">
+                                <img alt="Brand" src="../content/images/logoMagazineMkp.png">
+                            </a>
+                        </div>
+                        <div class="collapse navbar-collapse" id="integraApi_navbar-collapse">
+                            <ul class="nav navbar-nav navbar-right">
+                                <li><a href="../About/Api.html">Sobre a API</a></li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Documentação <span class="caret"></span></a>
+                                    <ul class="dropdown-menu dropdown-menu-left">
+                                        <li><a href="Authentication.html">Autenticação</a></li>
+                                        <li><a href="Resources.html">Recursos</a></li>
+                                        <li><a href="Patterns.html">Padrões e Modelos</a></li>
+                                        <li><a href="Orders.html">Pedidos</a></li>
+                                        <li><a href="https://integracomerce.blob.core.windows.net/documents-apiin/documentacao-API-Integra-versao.pdf" target="_blank">Download Documentação</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="../swagger/index.html" target="_blank">API Explorer</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+    <div class="container">
+        
+<style>
+    .apiTextDivision {
+        margin: 60px 0px 20px -20px;
+    }
+
+    li {
+        list-style: none;
+    }
+
+        li > p {
+            text-indent: 0px !important;
+        }
+</style>
+<div id="integraPattern">
+    <div id="bannerHome">
+        <img src="../content/images/astronautaIntegrav2.jpg" />
+        <h1><span>&#60;&#47;</span>Padrões e Modelos<span>&#62;</span></h1>
+    </div>
+    <div class="spacePat"></div>
+    <div class="row">
+
+        <div class="col-sm-offset-2 col-sm-8">
+
+            <div class="row apiTextDivision" style="margin-top:0px;">
+                <div class="col-sm-12" id="recursosDisp">
+                    <div class="spacePat25">
+                        <h2>Requests and Responses</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row spacePat10">
+                <div class="col-sm-12">
+                    <p class="text-justify">Todas as requisições tem que ser originadas do parceiro, cada requisição e uma requisição HTTP direcionada para um endpoint. As chamada envolve apenas parâmetros de URL HTTP como por exemplo:</p>
+                    <div class="spacePat"></div>
+                    <pre>
+    https://api.integracommerce.com.br/api/Order?page=1&perPage=99&status=PROCESSING&startDate=2023-07-17T10:21:50&endDate=2023-07-18T23:21:50
+</pre>
+                    <div class="spacePat"></div>
+                    <p class="text-justify">Ao olhar para o pedido acima, vemos que todos os parâmetros necessários já estão incluídos na URL . A API retorna as informações que procuram, em formato JSON.</p>
+                    <p class="text-justify">    Todos os métodos retornam um documento de resposta, que indica o status da operação (tanto sucesso ou erro).</p>
+                </div>
+            </div>
+
+
+            <div class="row apiTextDivision">
+                <div class="col-sm-12" id="recursosDisp">
+                    <div class="spacePat25">
+                        <h2>Limite de Requests</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row spacePat10">
+                <div class="col-sm-12">
+                    <p class="text-justify">Consultando endpoint abaixo é possível saber o limite de requisições por <strong>Hora</strong> e <strong>Minuto</strong> de cada verbo.</p>
+
+                    <div class="spacePat"></div>
+                    <pre>GET https://api.integracommerce.com.br/api/EndPointLimit</pre>
+                    <div class="spacePat"></div>
+
+
+                    <p> Caso exceda o limite você receberá um erro 429: Requisição excede a quantidade máxima de chamadas permitidas à API.</p><br />
+                    <p><strong> Quantidade de Itens por Request</strong></p>
+                    <table width="15%" border="0" style="font-size:18px; margin-left:25px;">
+                        <tr style="background:#f1f1f1;">
+                            <td><strong>Get All</strong></td>
+                            <td>100</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Update</strong></td>
+                            <td>100</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row apiTextDivision">
+                <div class="col-sm-12" id="recursosDisp">
+                    <div class="spacePat25">
+                        <h2>Paginação</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row spacePat10">
+                <div class="col-sm-12">
+                    <p class="text-justify">Para obter resultados paginados a serem retornados pela API, o parceiro deverá informar os seguintes parâmetros:</p>
+                    <p class="text-justify">page: pagina buscada</p>
+                    <p class="text-justify">perPage: Quantidade de Produtos por página. (ATENÇÃO: Número máximo de itens retornados é 100)</p>
+                    <p class="text-justify">Exemplo de busca utilizando page e perPage:</p>
+                    <pre>GET https://api.integracommerce.com.br/api/Order?page=1&perPage=10</pre>
+                    <p class="text-justify">No exemplo acima, a API Magalu Marketplace retornará a primeira pagina com 10 Pedidos.</p>
+                    <p class="text-justify">O recurso de filas não possuem paginação. É necessário confirmar o recebimento do registro para dar lugar a novos registros.</p>
+
+                </div>
+            </div>
+
+            <div class="row apiTextDivision">
+                <div class="col-sm-12" id="recursosDisp">
+                    <div class="spacePat25">
+                        <h2>Marketplace</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row spacePat10">
+                <div class="col-sm-12">
+                    <table width="100%" border="0" style="font-size:18px; margin-left:25px;">
+                        <tr style="background:#dadada;">
+                            <td><strong>Marketplace</strong></td>
+                            <td><strong>Name</strong></td>
+                            <td><strong>Store</strong></td>
+                        </tr>
+                         <tr style="background:#f1f1f1;">
+                            <td style="padding:3px 0;">MAGAZINE LUIZA</td>
+                            <td style="padding:3px 0;">magazineluiza</td>
+                            <td style="padding:3px 0;">magazineluiza</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row apiTextDivision">
+                <div class="col-sm-12" id="recursosDisp">
+                    <div class="spacePat25">
+                        <h2>Imagens do Sku</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row spacePat10">
+                <div class="col-sm-12">
+                    <p> As imagens que acompanham cada SKU, devem obedecer os seguintes critérios de formato e resolução.</p>
+
+                    <p><strong>Formato: </strong> somente JPEG</p>
+                    <p><strong>Tamanho mínimo: </strong>1000 x 1000 px</p>
+                    <p><strong>Tamanho máximo: </strong>1500 x 1500 px</p>
+                    <p> <strong>Resolução:</strong> </p>
+                    <p>
+                        <table class="col-sm-4" width="100%" border="0" style="text-align:center;font-size:18px;margin-left:25px;">
+                            <tr style="background:#dadada;">
+                                <td><strong>Mínima</strong></td>
+                                <td><strong>Máxima</strong></td>
+                            </tr>
+                            <tr style="background:#f1f1f1;">
+                                <td>200 dpi</td>
+                                <td>300 dpi</td>
+                            </tr>
+                        </table>
+                    </p>
+
+                </div>
+            </div>
+
+            <div class="row apiTextDivision">
+                <div class="col-sm-12" id="recursosDisp">
+                    <div class="spacePat25">
+                        <h2>Frete Magazine Luiza</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row spacePat10">
+                <div class="col-sm-12">
+                    <div class="resourceGroupDescription markdown formalTheme">
+                        <h3>Cálculo de frete</h3>
+                        <p>
+                            Você pode utilizar o serviço de frete do Magalu Marketplace ou utilizar seu próprio serviço de frete. O Cálculo de frete é realizado via uma requisição POST enviada pelo Magazine Luiza para a API do vendedor com objetivo de recuperar informações referente entrega de um produto para uma determinada região.
+                        </p>
+                        <br />
+                        <h3>Códigos de erro</h3>
+                        <p>A tabela abaixo contém os erros que podem ser retornados pela API de frete do vendedor e que serão interpretados pelo Magazine Luiza.</p>
+                        <table width="100%" border="0" style="font-size:18px; margin-left:22px;">
+                            <thead>
+                                <tr style="background:#dadada;">
+                                    <th>HTTP status code</th>
+                                    <th>Código</th>
+                                    <th>Métodos</th>
+                                    <th>Descrição</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="background:#f1f1f1;">
+                                    <td>400</td>
+                                    <td>delivery_not_available</td>
+                                    <td>POST</td>
+                                    <td>Não entrega na região informada</td>
+                                </tr>
+                                <tr>
+                                    <td>400</td>
+                                    <td>invalid_zipcode</td>
+                                    <td>POST</td>
+                                    <td>CEP inválido</td>
+                                </tr>
+                                <tr style="background:#f1f1f1;">
+                                    <td>409</td>
+                                    <td>out_of_stock</td>
+                                    <td>POST</td>
+                                    <td>Produto fora de estoque</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br />
+                        <h3>Requisição para Cálculo de frete</h3>
+                        <p>O Magazine Luiza irá enviar uma requisição a API do vendedor solicitando o Cálculo de frete conforme exemplo abaixo:</p>
+<pre><code>{
+    "session_id": "eb7cd60c-13c7-4247-a2f8-3d7faa4693b5",
+    "zipcode": "05036123",
+    "items": [
+        {
+            "sku": "123123123",
+            "quantity": 2,
+            "price": "10.00",
+            "dimensions": {
+                "width": "0.570",
+                "depth": "0.400",
+                "weight": "0.400",
+                "height": "0.200"
+            }
+        }
+    ]
+}
+</code></pre>
+                        <p><code>session_id</code>: ID único da sessão do usuário</p>
+                        <p><code>dimensions.width</code>, <code>dimensions.depth</code>, <code>dimensions.height</code>: Valores expressos em metros</p>
+
+                        <p><code>dimensions.weight</code>: Valor em Quilograma.</p>
+                        <br />
+                        <h3>Respostas do Cálculo de frete</h3>
+                        <p>A API de frete do vendedor deverá retornar a requisição de Cálculo de frete enviada pelo Magazine Luiza conforme os exemplos abaixo.</p>
+                        <p>
+                            <strong>Atenção:</strong> O tipo de entrega, campo <code>type</code>, deve ser definido pelo vendedor para cada transportadora. Também deve ser definida uma <strong>única</strong> transportadora
+                            com tipo convencional <code>conventional</code>, esta transportadora que será utilizada para resposta pelo site Magalu.
+                        </p>
+                        <br />
+                        <table width="50%" border="0" style="font-size:18px;margin-left:25px;">
+                            <thead>
+                                <tr style="background:#dadada;">
+                                    <th> type</th>
+                                    <th>Descrição</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="background:#f1f1f1;">
+                                    <td>conventional</td>
+                                    <td>Entrega Convencional</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br />
+                        <br />
+                        <ul>
+                            <li>
+                                <p style="margin-left:-20px;"><strong><em>Sucesso</em></strong> - Status code 200 (application/json)</p>
+<pre><code>  {
+      "packages": [
+          {
+              "items": [
+                  {
+                      "sku": "123123123",
+                      "quantity": 2
+                  }
+              ],
+              "delivery_options": [
+                  {
+                      "id": "delivery_option_id",
+                      "type": "conventional",
+                      "name": "Entrega normal",
+                      "price": "7.00",
+                      "delivery_days": 14
+                  }
+              ]
+          }
+      ]
+  }
+</code></pre>
+                            </li>
+                            <li>
+                                <p style="margin-left:-20px;"><strong><em>Entrega restrita</em></strong> - Status code 200 (application/json)</p>
+<pre><code>  {
+      "packages": [
+          {
+              "items": [
+                  {
+                      "sku": "123123123",
+                      "quantity": 2
+                  }
+              ],
+              "delivery_options": [
+                  {
+                      "id": "delivery_option_id",
+                      "type": "conventional",
+                      "name": "Entrega normal",
+                      "price": "7.00",
+                      "delivery_days": 14,
+                      "tags": ["restricted"] 
+                  }
+              ]
+          }
+      ]
+  }
+</code></pre>
+                            </li>
+                            <li>
+                                <p style="margin-left:-20px;"><strong><em>CEP inválido</em></strong> - Status code 400 (application/json)</p>
+<pre><code>  {
+      "message": "Invalid zipcode",
+      "code": "invalid_zipcode"
+  }
+</code></pre>
+                            </li>
+                            <li>
+                                <p style="margin-left:-20px;"><strong><em>Não entrega na região</em></strong> - Status code 400 (application/json)</p>
+<pre><code>  {
+      "message": "Delivery not available",
+      "code": "delivery_not_available",
+      "items": [
+          {
+              "sku": "2342346",
+              "available_quantity": 3,
+          },
+          {
+              "sku": "6568345",
+              "available_quantity": 1,
+          }
+      ]
+  }
+</code></pre>
+                            </li>
+                            <li>
+                                <p style="margin-left:-20px;"><strong><em>Item fora de estoque</em></strong> - Status code 409 (application/json)</p>
+<pre><code>  {
+      "message": "Items sem estoque",
+      "code": "out_of_stock",
+      "items": [
+          {
+              "sku": "2342346",
+              "available_quantity": 3,
+          },
+          {
+              "sku": "6568345",
+              "available_quantity": 1,
+          }
+      ]
+  }
+</code></pre>
+                            </li>
+                        </ul>
+                        <p>Para as respostas <strong><em>Não entrega na região</em></strong> e <strong><em>Item fora de estoque</em></strong> o parâmetro <code>available_quantity</code> em <em><code>items</code></em> é opcional.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row apiTextDivision">
+                <div class="col-sm-12" id="recursosDisp">
+                    <div class="spacePat25">
+                        <h2>API EXPLORER</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row spacePat10">
+                <div class="col-sm-12">
+                    <p class="text-justify">O <a href="../swagger/index.html" target="_blank">API Explorer</a> é uma ferramenta para consumo e visualização de serviços RESTful. E seu grande objetivo é permitir que a documentação possa evoluir no mesmo ritmo da implementação, já que pode ser gerada automaticamente com base em anotações do código. Ela permite aos developers interagirem com as APIs em sandbox de forma muito intuitiva, sem exigir conhecimento da implementação.</p>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+<div class="spacePat"></div>
+
+<script>
+
+
+    $(function () {
+        $('a[href*=#]:not([href=#])').click(function () {
+            if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+
+                var target = $(this.hash);
+                target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                if (target.length) {
+                    $('html,body').animate({
+                        scrollTop: target.offset().top
+                    }, 1000);
+                    return false;
+                }
+            }
+        });
+
+
+        var wrap = $(window);
+
+        wrap.on("scroll", function (e) {
+            if (scrollY > 200) {
+                $("#navigation").addClass("fix-menu");
+            } else {
+                $("#navigation").removeClass("fix-menu");
+            }
+
+        });
+
+
+    });
+
+
+
+</script>
+
+        <div id="int-msg" class="affix" style="z-index:900; left:25px; bottom:7px; width:96%;"></div>
+    </div>
+
+    <style>
+        #subscribeButton {
+            margin: 18px 0;
+        }
+
+            #subscribeButton a {
+                padding: 0 !important;
+                color: #fff;
+            }
+
+        @media screen and (max-width: 825px) {
+            #subscribeButton {
+                margin: 0 15px 18px;
+            }
+        }
+    </style>
+
+    <script src="../scripts/bootstrap.min.js"></script>
+    <script src="../scripts/modernizr-2.6.2.js"></script>
+    <script>
+        function OnSuccessFormContact(response) {
+            console.log("OnSuccessFormContact");
+            setTimeout(function () {
+                $("#formResponse > .boxLoader").css("display", "none");
+                $("#formResponse > .boxRespostaSucesso").css("display", "block");
+            }, 3000);
+        }
+
+
+
+        function OnFailureFormContact(response) {
+            console.log("OnFailureFormContact");
+            $("#formResponse > .boxLoader").css("display", "none");
+            $("#formResponse").css("display", "none");
+            $("#formContatos").css("display", "block");
+
+        }
+
+        function OnBeginFormContact() {
+            console.log("OnBeginFormContact");
+            $("#contactForm").css("display", "none");
+            $("#formResponse").css("display", "block");
+            $("#formResponse > .boxLoader").css("display", "block");
+        }
+
+        function showMessageData(data, type) {
+            var randowClass = Math.floor(Math.random() * 100);
+            $("#int-msg").append('<div style=" box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23); border: none; height: 100px; font-size: 18px; margin-top: 10px; display:none;" class="intg-animated intg-slideInLeft intg-msg-data-' + randowClass + ' alert alert-dismissable text-center mb0 ' + type + '"><strong><span id="resp-int-msg-Dest"></strong></span></div>');
+            $(".intg-msg-data-" + randowClass + " #resp-int-msg-Dest").empty().html(data);
+            $(".intg-msg-data-" + randowClass).fadeIn(300);
+            setTimeout(function () {
+                //Mensagem
+                $(".intg-msg-data-" + randowClass).fadeOut("slow", function () {
+                    $(".intg-msg-data-" + randowClass).remove();
+                });
+            }, 6000);
+        }
+
+    </script>
+</body>
+
+<!-- Mirrored from in.integracommerce.com.br/Documentation/Patterns by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 26 Apr 2025 19:00:31 GMT -->
+</html>

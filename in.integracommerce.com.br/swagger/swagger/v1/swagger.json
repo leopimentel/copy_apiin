@@ -1,0 +1,2510 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Api Integra In - WebApi",
+    "description": "This Api will be responsible for all entries",
+    "contact": {
+      "name": "luizalabs.com"
+    },
+    "version": "v1"
+  },
+  "paths": {
+    "/api/v1/clients": {
+      "post": {
+        "tags": [
+          "AppIntegration"
+        ],
+        "operationId": "post_api_v1_clients",
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppIntegrationRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppIntegrationRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppIntegrationRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppIntegrationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/EndPointLimit": {
+      "get": {
+        "tags": [
+          "EndPointLimit"
+        ],
+        "operationId": "get_api_endpointlimit",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/invoice/{idOrder}": {
+      "put": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Atualização dos dados fiscais um pedido",
+        "description": "Atualização dos dados fiscais um pedido",
+        "operationId": "put_api_v1_invoice_{idorder}",
+        "parameters": [
+          {
+            "name": "idOrder",
+            "in": "path",
+            "description": "Identificador do pedido",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Dados da nota fiscal",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvoiceContract"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvoiceContract"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvoiceContract"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvoiceContract"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Requisição mal formatada"
+          },
+          "401": {
+            "description": "Usuário não autorizado"
+          },
+          "403": {
+            "description": "Acesso não autorizado"
+          },
+          "405": {
+            "description": "Operação não suportada"
+          },
+          "409": {
+            "description": "Recurso em conflito"
+          },
+          "415": {
+            "description": "Content-type inválido"
+          },
+          "422": {
+            "description": "Não foi possível processar as instruções contidas na requisição"
+          },
+          "429": {
+            "description": "Requisição excede a quantidade máxima de chamadas permitidas à API."
+          },
+          "500": {
+            "description": "Erro na API"
+          }
+        }
+      }
+    },
+    "/api/v1/nfes/download": {
+      "post": {
+        "tags": [
+          "Nfes"
+        ],
+        "summary": "Realiza download das NFes encontradas durante o período informado para pedidos fulfillment",
+        "description": "Realiza download das NFes encontradas durante o período informado para pedidos fulfillment\r\n\r\nContent-Type: application/x-zip-compressed\r\n\r\nContent-Disposition: attachment; filename=\"nfes.zip\"\r\n\r\n\r\nEstrutura do arquivo:\r\n\r\nNfeVenda/\r\n\r\n├─ Autorizadas/\r\n\r\n│  ├─ chavenfe1.xml\r\n\r\n│  ├─ chavenfe2.xml\r\n\r\n├─ Canceladas/\r\n\r\n│  ├─ chavenfe3.xml\r\n\r\n├─ Denegadas/\r\n\r\nNfeRetornoSimbolico/\r\n\r\n├─ Autorizadas/\r\n\r\n│  ├─ chavenfe4.xml\r\n\r\n├─ Canceladas/\r\n\r\n│  ├─ chavenfe5.xml\r\n\r\nOutros/\r\n\r\n├─ chavenfe6.xml",
+        "operationId": "post_api_v1_nfes_download",
+        "parameters": [
+          {
+            "name": "period",
+            "in": "query",
+            "description": "Período desejado para busca. Zip conterá todas as nfes do mês informado. Formato: AAAA-MM. Ex: 2022-05",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/x-zip-compressed": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Seller não encontrado no fluxo fulfillment ou nenhuma nfe encontrada para o período",
+            "content": {
+              "application/x-zip-compressed": {
+                "schema": {
+                  "$ref": "#/components/schemas/NfeResponseError"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NfeResponseError"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição mal formatada. Parâmetros inválidos",
+            "content": {
+              "application/x-zip-compressed": {
+                "schema": {
+                  "$ref": "#/components/schemas/NfeResponseError"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NfeResponseError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro na API. Arquivo não foi criado",
+            "content": {
+              "application/x-zip-compressed": {
+                "schema": {
+                  "$ref": "#/components/schemas/NfeResponseError"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NfeResponseError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/nfes/download/week": {
+      "post": {
+        "tags": [
+          "Nfes"
+        ],
+        "summary": "Faz o download das NFes da semana  informada",
+        "description": "Faz o download das NFes da semana  informada\r\n\r\nContent-Type: application/x-zip-compressed\r\n\r\nContent-Disposition: attachment; filename=\"nfes.zip\"\r\n\r\nEstrutura do arquivo:\r\n\r\nNfeVenda/\r\n\r\n├─ Autorizadas/\r\n\r\n│  ├─ chavenfe1.xml\r\n\r\n│  ├─ chavenfe2.xml\r\n\r\n├─ Canceladas/\r\n\r\n│  ├─ chavenfe3.xml\r\n\r\n├─ Denegadas/\r\n\r\nNfeRetornoSimbolico/\r\n\r\n├─ Autorizadas/\r\n\r\n│  ├─ chavenfe4.xml\r\n\r\n├─ Canceladas/\r\n\r\n│  ├─ chavenfe5.xml\r\n\r\nOutros/\r\n\r\n├─ chavenfe6.xml",
+        "operationId": "post_api_v1_nfes_download_week",
+        "parameters": [
+          {
+            "name": "period",
+            "in": "query",
+            "description": "Exemplo 2022-10-01, ira retornar a nfes dos dias 2022-10-01 - 2022-10-08",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/x-zip-compressed": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Seller não encontrado no fluxo fulfillment ou nenhuma nfe encontrada para o período",
+            "content": {
+              "application/x-zip-compressed": {
+                "schema": {
+                  "$ref": "#/components/schemas/NfeResponseError"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NfeResponseError"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição mal formatada. Parâmetros inválidos",
+            "content": {
+              "application/x-zip-compressed": {
+                "schema": {
+                  "$ref": "#/components/schemas/NfeResponseError"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NfeResponseError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro na API. Arquivo não foi criado",
+            "content": {
+              "application/x-zip-compressed": {
+                "schema": {
+                  "$ref": "#/components/schemas/NfeResponseError"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NfeResponseError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/nfes/download/custom": {
+      "post": {
+        "tags": [
+          "Nfes"
+        ],
+        "summary": "Faz o download das NFes do intervalo de período informado",
+        "description": "Faz o download das NFes do intervalo de período informado\r\n\r\nContent-Type: application/x-zip-compressed\r\n\r\nContent-Disposition: attachment; filename=\"nfes.zip\"\r\n\r\nEstrutura do arquivo:\r\n\r\nNfeVenda/\r\n\r\n├─ Autorizadas/\r\n\r\n│  ├─ chavenfe1.xml\r\n\r\n│  ├─ chavenfe2.xml\r\n\r\n├─ Canceladas/\r\n\r\n│  ├─ chavenfe3.xml\r\n\r\n├─ Denegadas/\r\n\r\nNfeRetornoSimbolico/\r\n\r\n├─ Autorizadas/\r\n\r\n│  ├─ chavenfe4.xml\r\n\r\n├─ Canceladas/\r\n\r\n│  ├─ chavenfe5.xml\r\n\r\nOutros/\r\n\r\n├─ chavenfe6.xml",
+        "operationId": "post_api_v1_nfes_download_custom",
+        "parameters": [
+          {
+            "name": "start_date",
+            "in": "query",
+            "description": "Exemplo 2022-10-01, início do intervalo",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "description": "Exemplo 2022-10-08, final do intervalo",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/x-zip-compressed": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Seller não encontrado no fluxo fulfillment ou nenhuma nfe encontrada para o período",
+            "content": {
+              "application/x-zip-compressed": {
+                "schema": {
+                  "$ref": "#/components/schemas/NfeResponseError"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NfeResponseError"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição mal formatada. Parâmetros inválidos",
+            "content": {
+              "application/x-zip-compressed": {
+                "schema": {
+                  "$ref": "#/components/schemas/NfeResponseError"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NfeResponseError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro na API. Arquivo não foi criado",
+            "content": {
+              "application/x-zip-compressed": {
+                "schema": {
+                  "$ref": "#/components/schemas/NfeResponseError"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NfeResponseError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/nfes/list": {
+      "post": {
+        "tags": [
+          "Nfes"
+        ],
+        "summary": "Listar as NFes de um intervalo de período ou de uma ordem específica",
+        "description": "Listar as NFes de um intervalo de período ou de uma ordem específica",
+        "operationId": "post_api_v1_nfes_list",
+        "parameters": [
+          {
+            "name": "start_date",
+            "in": "query",
+            "description": "Exemplo 2022-10-01, início do intervalo",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "description": "Exemplo 2022-10-08, final do intervalo",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order_id",
+            "in": "query",
+            "description": "Exemplo 00000000000",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NfeResponseList"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NfeResponseList"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NfeResponseList"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Seller não encontrado no fluxo fulfillment ou nenhuma nfe encontrada para o período",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/NfeResponseError"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NfeResponseError"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NfeResponseError"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição mal formatada. Parâmetros inválidos",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/NfeResponseError"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NfeResponseError"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NfeResponseError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro na API.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/NfeResponseError"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NfeResponseError"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NfeResponseError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/oauth2/rollout/initialize": { },
+    "/api/v1/oauth2/rollout/resetSeller": { },
+    "/api/v1/oauth2/rollout/finalized": { },
+    "/api/v1/oauth2/rollout/finalized/ipdv": { },
+    "/api/v1/oauth2/callback/status": { },
+    "/api/v1/oauth2/code": { },
+    "/api/Order/{id}": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Recupera um pedido específico",
+        "description": "Método utilizado para recuperar um pedido específico.",
+        "operationId": "get_api_order_{id}",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id do Pedido",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pedido"
+          },
+          "400": {
+            "description": "Requisição mal formatada"
+          },
+          "401": {
+            "description": "Usuário não autorizado"
+          },
+          "403": {
+            "description": "Acesso não autorizado"
+          },
+          "405": {
+            "description": "Operação não suportada"
+          },
+          "409": {
+            "description": "Recurso em conflito"
+          },
+          "415": {
+            "description": "Content-type inválido"
+          },
+          "422": {
+            "description": "Não foi possível processar as instruções contidas na requisição"
+          },
+          "429": {
+            "description": "Requisição excede a quantidade máxima de chamadas permitidas à API."
+          },
+          "500": {
+            "description": "Erro na API"
+          }
+        }
+      }
+    },
+    "/api/Order": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Recupera todos pedidos",
+        "description": "Método utilizado para recuperar todos pedidos do Integra.\r\n\r\nObs.: O filtro de pesquisa por datas são campos opcionais, porém se informados restringimos o filtro por 30 dias.\r\nCaso um dos campos de data for preenchido o outro campo torna-se obrigatório.\r\nNão informando o filtro de pesquisa por data, o sistema irá retornar todos os pedidos realizados independente de sua data de criação.\r\n\r\nOs possíveis status são: New, Approved, Processing, Invoiced, Shipped, Delivered, Canceled, ShipmentException.",
+        "operationId": "get_api_order",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Página atual",
+            "required": true,
+            "schema": {
+              "maximum": 2147483647,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "perPage",
+            "in": "query",
+            "description": "Itens por página",
+            "required": true,
+            "schema": {
+              "maximum": 2147483647,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Status do pedido",
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "Data inicial (Campo opcional) - Formatos aceitos: (YYYY-MM-dd hh:mm:ss) ou (YYYY/MM/dd hh:mm:ss)",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "Data final (Campo opcional) - Formatos aceitos: (YYYY-MM-dd hh:mm:ss) ou (YYYY/MM/dd hh:mm:ss)",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de pedidos"
+          },
+          "400": {
+            "description": "Requisição mal formatada"
+          },
+          "401": {
+            "description": "Usuário não autorizado"
+          },
+          "403": {
+            "description": "Acesso não autorizado"
+          },
+          "405": {
+            "description": "Operação não suportada"
+          },
+          "409": {
+            "description": "Recurso em conflito"
+          },
+          "415": {
+            "description": "Content-type inválido"
+          },
+          "422": {
+            "description": "Não foi possível processar as instruções contidas na requisição"
+          },
+          "429": {
+            "description": "Requisição excede a quantidade máxima de chamadas permitidas à API."
+          },
+          "500": {
+            "description": "Erro na API"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Atualiza um pedido específico",
+        "description": "Método utilizado para atualizar um pedido específico.\r\n\r\nAo atualizar a informação de status do pedido, os seguintes Status devem ser utilizados: PROCESSING, INVOICED, SHIPPED, DELIVERED ou SHIPMENT_EXCEPTION.\r\nCada Status atualizado deve seguir uma ordem crescente, ou seja, se o Status está em Shipped(Despachado)\r\no mesmo não pode retornar para um status anterior, como Invoiced(Nota Fiscal Emitida).",
+        "operationId": "put_api_order",
+        "requestBody": {
+          "description": "Corpo do JSON",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderViewModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderViewModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderViewModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderViewModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Pedido atualizado com sucesso."
+          },
+          "400": {
+            "description": "Requisição mal formatada"
+          },
+          "401": {
+            "description": "Usuário não autorizado"
+          },
+          "403": {
+            "description": "Acesso não autorizado"
+          },
+          "405": {
+            "description": "Operação não suportada"
+          },
+          "409": {
+            "description": "Recurso em conflito"
+          },
+          "415": {
+            "description": "Content-type inválido"
+          },
+          "422": {
+            "description": "Não foi possível processar as instruções contidas na requisição"
+          },
+          "429": {
+            "description": "Requisição excede a quantidade máxima de chamadas permitidas à API."
+          },
+          "500": {
+            "description": "Erro na API"
+          }
+        }
+      }
+    },
+    "/api/Order/ShippingLabels": {
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Gera url com arquivo das etiquetas geradas para os pedidos informados",
+        "description": "Método utilizado para geração de etiquetas de pedidos que utilizam magalu entregas",
+        "operationId": "post_api_order_shippinglabels",
+        "requestBody": {
+          "description": "Corpo do JSON",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrdersGenerateLabelViewModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrdersGenerateLabelViewModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrdersGenerateLabelViewModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrdersGenerateLabelViewModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Etiquetas geradas com sucesso."
+          },
+          "400": {
+            "description": "Requisição mal formatada"
+          },
+          "401": {
+            "description": "Usuário não autorizado"
+          },
+          "412": {
+            "description": "Ação não pode ser realizada devido a alguma restrição indicada na mensagem"
+          },
+          "429": {
+            "description": "Requisição excede a quantidade máxima de chamadas permitidas à API."
+          },
+          "500": {
+            "description": "Erro na API"
+          }
+        }
+      }
+    },
+    "/api/OrderPackage/{id}": {
+      "get": {
+        "tags": [
+          "OrderPackage"
+        ],
+        "summary": "Recupera um pedido específico",
+        "description": "Método utilizado para recuperar um pedido específico.",
+        "operationId": "get_api_orderpackage_{id}",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id do Pedido",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pedido"
+          },
+          "400": {
+            "description": "Requisição mal formatada"
+          },
+          "401": {
+            "description": "Usuário não autorizado"
+          },
+          "403": {
+            "description": "Acesso não autorizado"
+          },
+          "405": {
+            "description": "Operação não suportada"
+          },
+          "409": {
+            "description": "Recurso em conflito"
+          },
+          "415": {
+            "description": "Content-type inválido"
+          },
+          "422": {
+            "description": "Não foi possível processar as instruções contidas na requisição"
+          },
+          "429": {
+            "description": "Requisição excede a quantidade máxima de chamadas permitidas à API."
+          },
+          "500": {
+            "description": "Erro na API"
+          }
+        }
+      }
+    },
+    "/api/OrderQueue": {
+      "get": {
+        "tags": [
+          "OrderQueue"
+        ],
+        "summary": "Recupera novos pedidos e atualizações de status provenientes do Marketplace.",
+        "description": "Nessa fila serão disponibilizados os novos pedidos (NEW) e as alterações de status de pedido (APPROVED, CANCELED).",
+        "operationId": "get_api_orderqueue",
+        "parameters": [
+          {
+            "name": "Status",
+            "in": "query",
+            "description": "Valores possíveis: NEW, APPROVED, CANCELED",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Requisição mal formatada"
+          },
+          "401": {
+            "description": "Usuário não autorizado"
+          },
+          "403": {
+            "description": "Acesso não autorizado"
+          },
+          "404": {
+            "description": "Não encontrado"
+          },
+          "405": {
+            "description": "Operação não suportada"
+          },
+          "409": {
+            "description": "Recurso em conflito"
+          },
+          "415": {
+            "description": "Content-type inválido"
+          },
+          "422": {
+            "description": "Não foi possível processar as instruções contidas na requisição"
+          },
+          "429": {
+            "description": "Requisição excede a quantidade máxima de chamadas permitidas à API."
+          },
+          "500": {
+            "description": "Erro na API"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "OrderQueue"
+        ],
+        "summary": "Insere na fila pedidos novos e atualizações de status vindas do Marketplace.",
+        "description": "Esse método é utilizado para confirmar o consumo de um item da fila de pedidos. Ao confirmar um item na fila o mesmo não aparecerá para consumo novamente.",
+        "operationId": "put_api_orderqueue",
+        "requestBody": {
+          "description": "Corpo do JSON",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/OrderStatusQueueReadConfirmationViewModel"
+                }
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/OrderStatusQueueReadConfirmationViewModel"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/OrderStatusQueueReadConfirmationViewModel"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/OrderStatusQueueReadConfirmationViewModel"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "201": {
+            "description": "Ok (Todos os itens confirmados com sucesso.)"
+          },
+          "400": {
+            "description": "Requisição mal formatada"
+          },
+          "401": {
+            "description": "Usuário não autorizado"
+          },
+          "403": {
+            "description": "Acesso não autorizado"
+          },
+          "405": {
+            "description": "Operação não suportada"
+          },
+          "409": {
+            "description": "Recurso em conflito"
+          },
+          "415": {
+            "description": "Content-type inválido"
+          },
+          "422": {
+            "description": "Não foi possível processar as instruções contidas na requisição"
+          },
+          "429": {
+            "description": "Requisição excede a quantidade máxima de chamadas permitidas à API."
+          },
+          "500": {
+            "description": "Erro na API"
+          }
+        }
+      }
+    },
+    "/api/Price": {
+      "put": {
+        "tags": [
+          "Price"
+        ],
+        "summary": "Atualiza o preço de um Sku.",
+        "description": "Método utilizado para atualizar o preço de um Sku.\r\n\r\n<strong>Quantidade de Itens por Request:</strong>100",
+        "operationId": "put_api_price",
+        "requestBody": {
+          "description": "Corpo do JSON",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PriceViewModel"
+                }
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PriceViewModel"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PriceViewModel"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PriceViewModel"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "204": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Requisição mal formatada"
+          },
+          "401": {
+            "description": "Usuário não autorizado"
+          },
+          "403": {
+            "description": "Acesso não autorizado"
+          },
+          "405": {
+            "description": "Operação não suportada"
+          },
+          "409": {
+            "description": "Recurso em conflito"
+          },
+          "415": {
+            "description": "Content-type inválido"
+          },
+          "422": {
+            "description": "Não foi possível processar as instruções contidas na requisição"
+          },
+          "429": {
+            "description": "Requisição excede a quantidade máxima de chamadas permitidas à API."
+          },
+          "500": {
+            "description": "Erro na API"
+          }
+        }
+      }
+    },
+    "/api/Product/{id}": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Recupera um produto específico.",
+        "description": "Método utilizado para recuperar um produto específico.",
+        "operationId": "get_api_product_{id}",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id do produto",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Produto"
+          },
+          "400": {
+            "description": "Requisição mal formatada"
+          },
+          "401": {
+            "description": "Usuário não autorizado"
+          },
+          "403": {
+            "description": "Acesso não autorizado"
+          },
+          "404": {
+            "description": "Produto não encontrado"
+          },
+          "405": {
+            "description": "Operação não suportada"
+          },
+          "409": {
+            "description": "Recurso em conflito"
+          },
+          "415": {
+            "description": "Content-type inválido"
+          },
+          "422": {
+            "description": "Não foi possível processar as instruções contidas na requisição"
+          },
+          "429": {
+            "description": "Requisição excede a quantidade máxima de chamadas permitidas à API."
+          },
+          "500": {
+            "description": "Erro na API"
+          }
+        }
+      }
+    },
+    "/api/Product": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Recupera todos os produtos cadastrados.",
+        "description": "Método utilizado para recuperar todos os produtos cadastrados.",
+        "operationId": "get_api_product",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Página atual",
+            "required": true,
+            "schema": {
+              "maximum": 2147483647,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "perPage",
+            "in": "query",
+            "description": "Itens por página",
+            "required": true,
+            "schema": {
+              "maximum": 2147483647,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Requisição mal formatada"
+          },
+          "401": {
+            "description": "Usuário não autorizado"
+          },
+          "403": {
+            "description": "Acesso não autorizado"
+          },
+          "405": {
+            "description": "Operação não suportada"
+          },
+          "409": {
+            "description": "Recurso em conflito"
+          },
+          "415": {
+            "description": "Content-type inválido"
+          },
+          "422": {
+            "description": "Não foi possível processar as instruções contidas na requisição"
+          },
+          "429": {
+            "description": "Requisição excede a quantidade máxima de chamadas permitidas à API."
+          },
+          "500": {
+            "description": "Erro na API"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Atualiza um produto específico.",
+        "description": "Método utilizado para atualizar um produto específico.",
+        "operationId": "put_api_product",
+        "requestBody": {
+          "description": "Corpo do JSON",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductViewModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductViewModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductViewModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductViewModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "204": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Requisição mal formatada"
+          },
+          "401": {
+            "description": "Usuário não autorizado"
+          },
+          "403": {
+            "description": "Acesso não autorizado"
+          },
+          "405": {
+            "description": "Operação não suportada"
+          },
+          "409": {
+            "description": "Recurso em conflito"
+          },
+          "415": {
+            "description": "Content-type inválido"
+          },
+          "422": {
+            "description": "Não foi possível processar as instruções contidas na requisição"
+          },
+          "429": {
+            "description": "Requisição excede a quantidade máxima de chamadas permitidas à API."
+          },
+          "500": {
+            "description": "Erro na API"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Insere um produto específico.",
+        "description": "Método utilizado para criar um produto.",
+        "operationId": "post_api_product",
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductViewModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductViewModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductViewModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductViewModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "201": {
+            "description": "OK(Produto cadastrado com sucesso.)"
+          },
+          "400": {
+            "description": "Requisição mal formatada"
+          },
+          "401": {
+            "description": "Usuário não autorizado"
+          },
+          "403": {
+            "description": "Acesso não autorizado"
+          },
+          "405": {
+            "description": "Operação não suportada"
+          },
+          "409": {
+            "description": "Recurso em conflito"
+          },
+          "415": {
+            "description": "Content-type inválido"
+          },
+          "422": {
+            "description": "Não foi possível processar as instruções contidas na requisição"
+          },
+          "429": {
+            "description": "Requisição excede a quantidade máxima de chamadas permitidas à API."
+          },
+          "500": {
+            "description": "Erro na API"
+          }
+        }
+      }
+    },
+    "/api/Sku/{id}": {
+      "get": {
+        "tags": [
+          "Sku"
+        ],
+        "summary": "Recupera um sku específico.",
+        "description": "Método utilizado para recuperar um sku específico.",
+        "operationId": "get_api_sku_{id}",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id do Sku",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sku"
+          },
+          "400": {
+            "description": "Requisição mal formatada"
+          },
+          "401": {
+            "description": "Usuário não autorizado"
+          },
+          "403": {
+            "description": "Acesso não autorizado"
+          },
+          "405": {
+            "description": "Operação não suportada"
+          },
+          "409": {
+            "description": "Recurso em conflito"
+          },
+          "415": {
+            "description": "Content-type inválido"
+          },
+          "422": {
+            "description": "Não foi possível processar as instruções contidas na requisição"
+          },
+          "429": {
+            "description": "Requisição excede a quantidade máxima de chamadas permitidas à API."
+          },
+          "500": {
+            "description": "Erro na API"
+          }
+        }
+      }
+    },
+    "/api/Sku": {
+      "get": {
+        "tags": [
+          "Sku"
+        ],
+        "summary": "Recupera skus cadastrados.",
+        "description": "Método utilizado para recuperar skus cadastrados.",
+        "operationId": "get_api_sku",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Página atual",
+            "required": true,
+            "schema": {
+              "maximum": 2147483647,
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "perPage",
+            "in": "query",
+            "description": "Itens por pagina",
+            "required": true,
+            "schema": {
+              "maximum": 2147483647,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de Skus"
+          },
+          "400": {
+            "description": "Requisição mal formatada"
+          },
+          "401": {
+            "description": "Usuário não autorizado"
+          },
+          "403": {
+            "description": "Acesso não autorizado"
+          },
+          "404": {
+            "description": "Sku não encontrado"
+          },
+          "405": {
+            "description": "Operação não suportada"
+          },
+          "409": {
+            "description": "Recurso em conflito"
+          },
+          "415": {
+            "description": "Content-type inválido"
+          },
+          "422": {
+            "description": "Não foi possível processar as instruções contidas na requisição"
+          },
+          "429": {
+            "description": "Requisição excede a quantidade máxima de chamadas permitidas à API."
+          },
+          "500": {
+            "description": "Erro na API"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Sku"
+        ],
+        "summary": "Cria um sku.",
+        "description": "Método utilizado para criar um sku.",
+        "operationId": "post_api_sku",
+        "requestBody": {
+          "description": "Corpo do JSON",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SkuViewModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SkuViewModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SkuViewModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SkuViewModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "201": {
+            "description": "Ok (Sku cadastrado com sucesso.)"
+          },
+          "400": {
+            "description": "Requisição mal formatada"
+          },
+          "401": {
+            "description": "Usuário não autorizado"
+          },
+          "403": {
+            "description": "Acesso não autorizado"
+          },
+          "405": {
+            "description": "Operação não suportada"
+          },
+          "409": {
+            "description": "Recurso em conflito"
+          },
+          "415": {
+            "description": "Content-type inválido"
+          },
+          "422": {
+            "description": "Não foi possível processar as instruções contidas na requisição"
+          },
+          "429": {
+            "description": "Requisição excede a quantidade máxima de chamadas permitidas à API."
+          },
+          "500": {
+            "description": "Erro na API"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Sku"
+        ],
+        "summary": "Atualiza um sku específico.",
+        "description": "Método utilizado para atualizar um sku específico.",
+        "operationId": "put_api_sku",
+        "requestBody": {
+          "description": "Corpo do JSON",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SkuViewModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SkuViewModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SkuViewModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SkuViewModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "204": {
+            "description": "Ok"
+          },
+          "400": {
+            "description": "Requisição mal formatada"
+          },
+          "401": {
+            "description": "Usuário não autorizado"
+          },
+          "403": {
+            "description": "Acesso não autorizado"
+          },
+          "405": {
+            "description": "Operação não suportada"
+          },
+          "409": {
+            "description": "Recurso em conflito"
+          },
+          "415": {
+            "description": "Content-type inválido"
+          },
+          "422": {
+            "description": "Não foi possível processar as instruções contidas na requisição"
+          },
+          "429": {
+            "description": "Requisição excede a quantidade máxima de chamadas permitidas à API."
+          },
+          "500": {
+            "description": "Erro na API"
+          }
+        }
+      }
+    },
+    "/api/Stock": {
+      "put": {
+        "tags": [
+          "Stock"
+        ],
+        "summary": "Atualiza o estoque de um ou mais skus.",
+        "description": "Método utilizado para atualizar o estoque de um ou mais skus.\r\n\r\n<strong>Quantidade de Itens por Request:</strong>100",
+        "operationId": "put_api_stock",
+        "requestBody": {
+          "description": "Corpo do JSON",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SkuStockViewModel"
+                }
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SkuStockViewModel"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SkuStockViewModel"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SkuStockViewModel"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "204": {
+            "description": "Ok"
+          },
+          "400": {
+            "description": "Requisição mal formatada"
+          },
+          "401": {
+            "description": "Usuário não autorizado"
+          },
+          "403": {
+            "description": "Acesso não autorizado"
+          },
+          "405": {
+            "description": "Operação não suportada"
+          },
+          "409": {
+            "description": "Recurso em conflito"
+          },
+          "415": {
+            "description": "Content-type inválido"
+          },
+          "422": {
+            "description": "Não foi possível processar as instruções contidas na requisição"
+          },
+          "429": {
+            "description": "Requisição excede a quantidade máxima de chamadas permitidas à API."
+          },
+          "500": {
+            "description": "Erro na API"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AppIntegrationRequest": {
+        "required": [
+          "description",
+          "name",
+          "privacy_policy_url",
+          "redirect_uri",
+          "service_term_url"
+        ],
+        "type": "object",
+        "properties": {
+          "redirect_uri": {
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string"
+          },
+          "description": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string"
+          },
+          "privacy_policy_url": {
+            "type": "string"
+          },
+          "service_term_url": {
+            "type": "string"
+          },
+          "own_integration": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "additionalProperties": false
+      },
+      "AttributeViewModel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CategoryViewModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "parentId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FeeViewModel": {
+        "type": "object",
+        "properties": {
+          "comission": {
+            "type": "string",
+            "nullable": true
+          },
+          "internationalComission": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "InvoiceContract": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "nullable": true
+          },
+          "line": {
+            "type": "string",
+            "nullable": true
+          },
+          "number": {
+            "type": "string",
+            "nullable": true
+          },
+          "issueDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "invoicedDanfeXml": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MarketplaceStructureViewModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "parentId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "NfeResponseError": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "erros": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "NfeResponseLink": {
+        "type": "object",
+        "properties": {
+          "xml": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "NfeResponseList": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "nullable": true
+          },
+          "key": {
+            "type": "string",
+            "nullable": true
+          },
+          "cfop": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "links": {
+            "$ref": "#/components/schemas/NfeResponseLink"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OrderPaymentViewModel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "installments": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "amount": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OrderProductViewModel": {
+        "type": "object",
+        "properties": {
+          "idSku": {
+            "type": "string",
+            "nullable": true
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "price": {
+            "type": "string",
+            "nullable": true
+          },
+          "freight": {
+            "type": "string",
+            "nullable": true
+          },
+          "discount": {
+            "type": "string",
+            "nullable": true
+          },
+          "idOrderPackage": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "internationalPrice": {
+            "type": "string",
+            "nullable": true
+          },
+          "internationalDiscount": {
+            "type": "string",
+            "nullable": true
+          },
+          "taxesData": {
+            "$ref": "#/components/schemas/TaxesDataViewModel"
+          },
+          "fee": {
+            "$ref": "#/components/schemas/FeeViewModel"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OrdersGenerateLabelViewModel": {
+        "type": "object",
+        "properties": {
+          "format": {
+            "type": "string",
+            "nullable": true
+          },
+          "orders": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "downloadInvoice": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OrderStatusQueueReadConfirmationViewModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OrderViewModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idOrder": {
+            "type": "string",
+            "nullable": true
+          },
+          "businessId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idOrderMarketplace": {
+            "type": "string",
+            "nullable": true
+          },
+          "insertedDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "purchasedDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "approvedDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "marketplaceName": {
+            "type": "string",
+            "nullable": true
+          },
+          "storeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "updatedMarketplaceStatus": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "insertedErp": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "estimatedDeliveryDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "customerPfCpf": {
+            "type": "string",
+            "nullable": true
+          },
+          "receiverName": {
+            "type": "string",
+            "nullable": true
+          },
+          "customerPfName": {
+            "type": "string",
+            "nullable": true
+          },
+          "customerPjCnpj": {
+            "type": "string",
+            "nullable": true
+          },
+          "customerPjCorporatename": {
+            "type": "string",
+            "nullable": true
+          },
+          "deliveryAddressStreet": {
+            "type": "string",
+            "nullable": true
+          },
+          "deliveryAddressAdditionalInfo": {
+            "type": "string",
+            "nullable": true
+          },
+          "deliveryAddressZipcode": {
+            "type": "string",
+            "nullable": true
+          },
+          "deliveryAddressNeighborhood": {
+            "type": "string",
+            "nullable": true
+          },
+          "deliveryAddressCity": {
+            "type": "string",
+            "nullable": true
+          },
+          "deliveryAddressReference": {
+            "type": "string",
+            "nullable": true
+          },
+          "deliveryAddressState": {
+            "type": "string",
+            "nullable": true
+          },
+          "deliveryAddressNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "telephoneMainNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "telephoneSecundaryNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "telephoneBusinessNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "totalAmount": {
+            "type": "string",
+            "nullable": true
+          },
+          "internationalTotalAmount": {
+            "type": "string",
+            "nullable": true
+          },
+          "totalTax": {
+            "type": "string",
+            "nullable": true
+          },
+          "totalFreight": {
+            "type": "string",
+            "nullable": true
+          },
+          "internationalTotalFreight": {
+            "type": "string",
+            "nullable": true
+          },
+          "totalDiscount": {
+            "type": "string",
+            "nullable": true
+          },
+          "customerMail": {
+            "type": "string",
+            "nullable": true
+          },
+          "customerBirthDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "customerPjIe": {
+            "type": "string",
+            "nullable": true
+          },
+          "orderStatus": {
+            "type": "string",
+            "nullable": true
+          },
+          "invoicedNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "invoicedLine": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "invoicedIssueDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "invoicedKey": {
+            "type": "string",
+            "nullable": true
+          },
+          "invoicedDanfeXml": {
+            "type": "string",
+            "nullable": true
+          },
+          "shippedTrackingUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "shippedTrackingProtocol": {
+            "type": "string",
+            "nullable": true
+          },
+          "shippedEstimatedDelivery": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "shippedCarrierDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "shippedCarrierName": {
+            "type": "string",
+            "nullable": true
+          },
+          "shipmentExceptionObservation": {
+            "type": "string",
+            "nullable": true
+          },
+          "shipmentExceptionOccurrenceDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "deliveredDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "shippedCodeERP": {
+            "type": "string",
+            "nullable": true
+          },
+          "branchDocument": {
+            "type": "string",
+            "nullable": true
+          },
+          "marketplaceDocument": {
+            "type": "string",
+            "nullable": true
+          },
+          "sellerName": {
+            "type": "string",
+            "nullable": true
+          },
+          "gatewayPaymentDocument": {
+            "type": "string",
+            "nullable": true
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderProductViewModel"
+            },
+            "nullable": true
+          },
+          "payments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderPaymentViewModel"
+            },
+            "nullable": true
+          },
+          "postingLimit": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PriceSku": {
+        "type": "object",
+        "properties": {
+          "listPrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "salePrice": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PriceViewModel": {
+        "type": "object",
+        "properties": {
+          "idSku": {
+            "type": "string",
+            "nullable": true
+          },
+          "listPrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "salePrice": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductViewModel": {
+        "required": [
+          "active",
+          "brand",
+          "categories",
+          "code",
+          "idProduct",
+          "name",
+          "nbmOrigin",
+          "warrantyTime"
+        ],
+        "type": "object",
+        "properties": {
+          "idProduct": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "brand": {
+            "type": "string"
+          },
+          "nbmOrigin": {
+            "type": "string"
+          },
+          "nbmNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "warrantyTime": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CategoryViewModel"
+            }
+          },
+          "marketplaceStructures": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MarketplaceStructureViewModel"
+            },
+            "nullable": true
+          },
+          "attributes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AttributeViewModel"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RolloutInitializeDto": {
+        "type": "object",
+        "properties": {
+          "client_id": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RolloutResetSellerDto": {
+        "required": [
+          "client_id",
+          "userName"
+        ],
+        "type": "object",
+        "properties": {
+          "userName": {
+            "type": "string"
+          },
+          "client_id": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SkuStockViewModel": {
+        "type": "object",
+        "properties": {
+          "idSku": {
+            "type": "string",
+            "nullable": true
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SkuViewModel": {
+        "type": "object",
+        "properties": {
+          "idSku": {
+            "type": "string",
+            "nullable": true
+          },
+          "idProduct": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "height": {
+            "type": "number",
+            "format": "double"
+          },
+          "width": {
+            "type": "number",
+            "format": "double"
+          },
+          "length": {
+            "type": "number",
+            "format": "double"
+          },
+          "weight": {
+            "type": "number",
+            "format": "double"
+          },
+          "codeEan": {
+            "type": "string",
+            "nullable": true
+          },
+          "codeNcm": {
+            "type": "string",
+            "nullable": true
+          },
+          "codeIsbn": {
+            "type": "string",
+            "nullable": true
+          },
+          "codeNbm": {
+            "type": "string",
+            "nullable": true
+          },
+          "variation": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "boolean"
+          },
+          "price": {
+            "$ref": "#/components/schemas/PriceSku"
+          },
+          "stockQuantity": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "mainImageUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "urlImages": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "attributes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AttributeViewModel"
+            },
+            "nullable": true
+          },
+          "fulfillment": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TaxesDataViewModel": {
+        "type": "object",
+        "properties": {
+          "icms": {
+            "type": "string",
+            "nullable": true
+          },
+          "internationalIcms": {
+            "type": "string",
+            "nullable": true
+          },
+          "importacao": {
+            "type": "string",
+            "nullable": true
+          },
+          "internationalImportacao": {
+            "type": "string",
+            "nullable": true
+          },
+          "icmsFreight": {
+            "type": "string",
+            "nullable": true
+          },
+          "internationalIcmsFreight": {
+            "type": "string",
+            "nullable": true
+          },
+          "importacaoFreight": {
+            "type": "string",
+            "nullable": true
+          },
+          "internationalImportacaoFreight": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "BasicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      },
+      "Bearer": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  },
+  "security": [
+    {
+      "BasicAuth": [ ]
+    },
+    {
+      "Bearer": [ ]
+    }
+  ]
+}

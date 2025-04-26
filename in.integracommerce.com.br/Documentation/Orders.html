@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Mirrored from in.integracommerce.com.br/Documentation/Orders by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 26 Apr 2025 19:00:31 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders - Integra API</title>
+
+    <script src="../scripts/jquery-2.1.3.min.js"></script>
+
+    <script src="../scripts/jquery-2.1.3.min.js"></script>
+    <link href="../content/bootstrap.css" rel="stylesheet" />
+    <link href="../content/Site.css" rel="stylesheet" />
+    <script src="../scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <link href="../content/animate.css" rel="stylesheet" />
+</head>
+<body>
+    <header id="intgraApi_header">
+        <nav class="navbar navbar-default">
+            <div class="row">
+                <div class="col-lg-10 col-lg-offset-1">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#integraApi_navbar-collapse" aria-expanded="false">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand intgraApi_Header_logo" href="../Home.html">
+                                <img alt="Brand" src="../content/images/logoMagazineMkp.png">
+                            </a>
+                        </div>
+                        <div class="collapse navbar-collapse" id="integraApi_navbar-collapse">
+                            <ul class="nav navbar-nav navbar-right">
+                                <li><a href="../About/Api.html">Sobre a API</a></li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Documentação <span class="caret"></span></a>
+                                    <ul class="dropdown-menu dropdown-menu-left">
+                                        <li><a href="Authentication.html">Autenticação</a></li>
+                                        <li><a href="Resources.html">Recursos</a></li>
+                                        <li><a href="Patterns.html">Padrões e Modelos</a></li>
+                                        <li><a href="Orders.html">Pedidos</a></li>
+                                        <li><a href="https://integracomerce.blob.core.windows.net/documents-apiin/documentacao-API-Integra-versao.pdf" target="_blank">Download Documentação</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="../swagger/index.html" target="_blank">API Explorer</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+    <div class="container">
+        
+<div id="integraPattern">
+    <div id="bannerHome">
+        <img src="../content/images/astronautaIntegrav2.jpg" />
+        <h1><span>&#60;&#47;</span>Pedidos<span>&#62;</span></h1>
+    </div>
+    <div class="spacePat"></div>
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+            <div class="row spacePat10">
+                <div class="row">
+                    <div class="col-sm-12" id="recursosDisp">
+                        <div class="spacePat25">
+                            <h2>PEDIDOS (/api/Order)</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row spacePat10">
+                    <div class="col-sm-12">
+                        <p class="text-justify">São as informações de um pedido feito por um cliente para um marketplace integrado ao Magalu Marketplace, nele ficam as informações do cliente, das notas e dos status do pedido. Os status possíveis são:</p>
+                        <ul>
+                            <li>(-1) - NEW - Pedidos novos</li>
+                            <li>(0) - APPROVED - Pedido aprovado (pagamento OK)</li>
+                            <li>(1) - PROCESSING - Pedido aguardando emissão de nota fiscal</li>
+                            <li>(2) - INVOICED - Pedido aguardando expedição</li>
+                            <li>(3) - SHIPPED - Pedido aguardando entrega</li>
+                            <li>(4) - DELIVERED - Pedido entregue</li>
+                            <li>(5) - SHIPMENT_EXCEPTION - Pedido com exceção de transporte</li>
+                            <li>(6) - UNAVAILABLE - Pedido sem estoque</li>
+                            <li>(7) - CANCELED - Pedido cancelado</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="spacePat25"></div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="spacePat25">
+                            <h3>Fluxo normal de Status</h3>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <img class="img-responsive imgFluxoNormal" src="../content/images/fluxoNormalOrder.png" />
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="spacePat25">
+                            <h4 class="boldusTotus600 ml15"><strong>Order</strong></h4>
+                        </div>
+                    </div>
+                    <div class="row spacePat10">
+                        <div class="col-sm-12">
+                            <p class="text-justify">No Magalu Marketplace os 2 primeiros status de um pedido ocorrem dentro da plataforma. Um pedido entra como novo (NEW). Depois ele pode ser aprovado (APPROVED) ou cancelado (CANCELED) pelo marketplace. Após ser aprovado é necessário que o parceiro(ERP,Loja...etc) mude o status para processando(PROCESSING) para indicar que o pedido já encontra-se em separação e fica aguardando os próximos status que são: Nota Fiscal (INVOICED), Enviado (SHIPPED) ou Entregue (DELIVERED).</p>
+                            <p class="text-justify">Os status de NEW para APPROVED são atualizados automaticamente no Integra, conforme o Marketplace informa esses novos status. No status NEW o pedido ainda não foi aprovado. Desta forma não há ainda movimentação em estoque, o Integra possui um sistema de reserva de estoque. Que pode ser configurado diretamente no painel quantos dias o produto ficará na reserva. Até que um pedido seja realmente pago. Só então o estoque é realmente descontado.</p>
+                            <p class="text-justify">Caso o parceiro não possa trabalhar dessa forma. É necessário trabalhar apenas com pedidos APPROVED. Deixando os pedidos em Status NEW de lado. E inserir no ERP ou em outros sistemas, apenas quando os pedidos forem Aprovados.</p>
+                            <p class="text-justify">Ao atualizar a informação de status do pedido, os seguintes Status devem ser utilizados: PROCESSING, INVOICED, SHIPPED, DELIVERED, SHIPMENT_EXCEPTION ou CANCELED. Cada Status atualizado deve seguir uma ordem crescente, ou seja, se o Status está em Shipped(Despachado) o mesmo não pode retornar para um status anterior, como Invoiced(Nota Fiscal Emitida).</p>
+
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="spacePat25">
+                            <h4 class="boldusTotus600 ml15"><strong>SISTEMA DE FILAS API INTEGRA</strong></h4>
+                        </div>
+                    </div>
+                    <div class="row spacePat10">
+                        <div class="col-sm-12">
+                            <p class="text-justify">O sistema de filas tem como objetivo facilitar a leitura de inserções e atualizações de itens da API Integra. Por exemplo, a atualização de um SKU, será disponibilidade na sua fila (SkuQueue). Sendo assim, após verificar que ocorreu a atualização deve-se consultar o SKU para ler os dados atualizados.</p>
+                            <p class="text-justify">Como todo sistema de fila, o primeiro a chegar é o primeiro a sair, então considerando que as filas têm um limite de 100 itens, somente irão aparecer novos itens à medida que os itens da fila são confirmados (consumidos).</p>
+                            <p class="text-justify">Para consumir os itens da fila é necessário enviar os Ids da OrderQueue. Deve ser atentar que não se trata do Id do SKU ou do ORDER. Todas as filas seguem o mesmo padrão de consumo através de uma chamada PUT, onde passa como parâmetro a lista de Ids, como no exemplo abaixo:</p>
+                            <p class="text-justify">O retorno em caso de sucesso é 204 (No content), caso contrário é retornado apenas os itens que não foram possíveis a confirmação, os demais serão confirmados (consumidos).</p>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="spacePat25">
+                            <h4 class="boldusTotus600 ml15"><strong>Fila de pedidos (OrderQueue)</strong></h4>
+                        </div>
+                    </div>
+
+                    <div class="row spacePat10">
+                        <div class="col-sm-12">
+                            <p class="text-justify">Nessa fila serão disponibilizados os novos pedidos (NEW) e as alterações de status de pedido que vieram do Marketplace (APPROVED, CANCELED).</p>
+                            <p class="text-justify">Ao fazer o GET dos pedidos com status APPROVED e confirmar o consumo destes pedidos na OrderQueue, é necessário um novo PUT, mas desta vez em Orders atualizando o status do pedido de APPROVED para PROCESSING.</p>
+                            <p class="text-justify">Chamada:/api/OrderQueue</p>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="spacePat25">
+                            <h4 class="boldusTotus600 ml15"><strong>Demais Status</strong></h4>
+                        </div>
+                    </div>
+                    <div class="row spacePat10">
+                        <div class="col-sm-12">
+                            <p class="text-justify">O parceiro tambem pode enviar três tipos de exeções do status de pedido.</p>
+                            <p class="text-justify">Cancelado (CANCELED): pode ser enviado a partir	qualquer status do fluxo normal.</p>
+                            <p class="text-justify">Exceção de Transporte (SHIPMENT_EXCEPTION): pode ser enviado a partir qualquer status do fluxo normal.</p>
+                            <p class="text-justify">Pedido sem estoque (UNAVAILABLE): pode ser enviado a partir qualquer status do fluxo normal.</p>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row spacePat10">
+
+                    <div class="col-sm-12">
+                        <div class="spacePat25">
+                            <h4 class="boldusTotus600 ml15"><strong>Campos Obrigatórios para cada Status</strong></h4>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 spacePat10">
+                        <p class="text-justify ">Nos pedidos a obrigatoriedade dos campos depende do status. A mudança do status do pedido para um atual , tem que corresponder a um status válido , ou seja ele não pode voltar para um status anterior.</p>
+                    </div>
+                    <div class="col-sm-12 spacePat25">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="info">STATUS</th>
+                                    <th class="info">CAMPO</th>
+                                    <th class="info">DESCRIÇÃO</th>
+                                    <th class="info">OBRIGATORIEDADE</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="warning">processing</td>
+                                    <td class="warning"></td>
+                                    <td class="warning"></td>
+                                    <td class="warning"></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>"IdOrder": "string"</td>
+                                    <td>Id do pedido</td>
+                                    <td>X</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>"OrderStatus": "PROCESSING"</td>
+                                    <td>Status do pedido</td>
+                                    <td>X</td>
+                                </tr>
+                                <tr>
+                                    <td class="warning">invoiced</td>
+                                    <td class="warning"></td>
+                                    <td class="warning"></td>
+                                    <td class="warning"></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>"IdOrder": "string"</td>
+                                    <td>Id do pedido</td>
+                                    <td>X</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>"OrderStatus": "INVOICED"</td>
+                                    <td>Status do pedido</td>
+                                    <td>X</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td> "InvoicedNumber": "string"</td>
+                                    <td>Numero da Nota Fiscal</td>
+                                    <td>X</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>  "InvoicedLine": 0</td>
+                                    <td>Série da Nota Fiscal</td>
+                                    <td>X</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>"InvoicedIssueDate": "2016-06-23T10:59:50.381Z"</td>
+                                    <td>Data de Emissão da Fatura</td>
+                                    <td>X</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>"InvoicedKey": "string"</td>
+                                    <td>Chave da Nota Fiscal</td>
+                                    <td>X</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>"InvoicedDanfeXml": "string"</td>
+                                    <td> Xml da Nota Fiscal</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="warning">shipped</td>
+                                    <td class="warning"></td>
+                                    <td class="warning"></td>
+                                    <td class="warning"></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>"IdOrder": "string"</td>
+                                    <td>Id do pedido</td>
+                                    <td>X</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>"OrderStatus": "SHIPPED"</td>
+                                    <td>Status do pedido</td>
+                                    <td>X</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>"ShippedTrackingUrl": "string"</td>
+                                    <td> Url de Rastreio</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>"ShippedTrackingProtocol": "string"</td>
+                                    <td>Código de Rastreio</td>
+                                    <td>X</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>"ShippedEstimatedDelivery": "2016-06-23T10:59:50.381Z" </td>
+                                    <td>Data estimativa de Entrega</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>"ShippedCarrierDate": "2016-06-23T10:59:50.381Z"</td>
+                                    <td>Data Entrega a Transportadora</td>
+                                    <td>X</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>"ShippedCarrierName": "string"</td>
+                                    <td>Nome da Transportadora</td>
+                                    <td>X</td>
+                                </tr>
+                                <tr>
+                                    <td class="warning">delivered</td>
+                                    <td class="warning"></td>
+                                    <td class="warning"></td>
+                                    <td class="warning"></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>"IdOrder": "string"</td>
+                                    <td>Id do pedido</td>
+                                    <td>X</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>"OrderStatus": "DELIVERED"</td>
+                                    <td>Status do pedido</td>
+                                    <td>X</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td> "DeliveredDate": "2016-06-23T10:59:50.381Z"</td>
+                                    <td> Data da entrega ao cliente</td>
+                                    <td>X</td>
+                                </tr>
+                                <tr>
+                                    <td class="warning">shipmentException</td>
+                                    <td class="warning"></td>
+                                    <td class="warning"></td>
+                                    <td class="warning"></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>"IdOrder": "string"</td>
+                                    <td>Id do pedido</td>
+                                    <td>X</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>"OrderStatus": "SHIPMENTEXCEPTION"</td>
+                                    <td>Status do pedido</td>
+                                    <td>X</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>"ShipmentExceptionObservation": "string"</td>
+                                    <td>Observação em caso de falha</td>
+                                    <td>X</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>"ShipmentExceptionOccurrenceDate": "2016-06-23T10:59:50.381Z"</td>
+                                    <td>Data em que houve falha</td>
+                                    <td>X</td>
+                                </tr>
+
+
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="spacePat25">
+                        <h3>Métodos</h3>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="spacePat25">
+                        <h4 class="boldusTotus600 ml15"><strong>Order</strong></h4>
+                    </div>
+                </div>
+                <div class="row spacePat10">
+
+                    <div class="col-sm-12">
+                        <div class="spacePat25">
+                            <h4 class="boldusTotus600 ml15">Atualizar Pedido</h4>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 spacePat10">
+                        <p class="text-justify ">Metodo: PUT</p>
+                        <p class="text-justify ">Endpoint:(/api/Order)</p>
+                        <p class="text-justify ">Verifique no <a href="../swagger/index.html" target="_blank">Swagger</a> o exemplo de json's para alteração de status</p>
+<pre class="spacePat">
+{
+    "IdOrder": "string",                                                /*Obrigatório: Pedido deve existir */
+    "IdOrderMarketplace": "string",                                     /* Id do Pedido no Marketplace */
+    "InsertedDate": "2016-06-23T10:59:50.381Z",                         /* Data de Insersão do pedido */
+    "PurchasedDate": "2016-06-23T10:59:50.381Z",                        /* Data da Compra */
+    "ApprovedDate": "2016-06-23T10:59:50.381Z",                         /* Data de Aprovação */
+    "UpdatedDate": "2016-06-23T10:59:50.381Z",                          /* Data do ultimo Update */
+    "MarketplaceName": "string",                                        /* Nome do Marketplace: b2w | cnova | carrefour | vtex| mobly | magazineluiza | dafiti | tricae */
+    "StoreName": "string",                                              /* Nome da Loja do Marketplace: (SHOPTIME, SUBMARINO, LOJASAMERICANAS)   VTEX | MOBLY | magazineluiza | DAFITI | TRICAE */ 
+    "UpdatedMarketplaceStatus": true,                                   /*Está atualizado no Marketplace? (true/false)*/
+    "InsertedErp": true,                                                /*Está inserido no ERP? (true/false)*/          
+    "EstimatedDeliveryDate": "2016-06-23T10:59:50.381Z",                /* Data de Previsão de entrega*/    
+    "CustomerPfCpf": "string",                                          /* CPF do Consumidor */
+    "CustomerPfName": "string",                                         /* Nome do Consumidor */
+    "CustomerPjCnpj": "string",                                         /* CNPJ - Pessoa Juridica */
+    "CustomerPjCorporatename": "string",                                /* Nome da Empresa */
+    "DeliveryAddressStreet": "string",                                  /* Rua de Entrega */
+    "DeliveryAddressAdditionalInfo": "string",                          /* Informações Adicionais de Entrega*/
+    "DeliveryAddressZipcode": "string",                                 /* CEP */
+    "DeliveryAddressNeighborhood": "string",                            /* Bairro */
+    "DeliveryAddressCity": "string",                                    /* Cidade */
+    "DeliveryAddressReference": "string",                               /* Ponto de Referencia */
+    "DeliveryAddressState": "string",                                   /* Estado */
+    "DeliveryAddressNumber": "string",                                  /* Numero do Endereço */
+    "TelephoneMainNumber": "string",                                    /* Telefone Principal */
+    "TelephoneSecundaryNumber": "string",                               /* Telefone Secundario */
+    "TelephoneBusinessNumber": "string",                                /* Telefone Comercial */
+    "TotalAmount": "string",                                            /* Total da Compra */
+    "TotalFreight": "string",                                           /* Valor do Frete */
+    "TotalDiscount": "string",                                          /* Desconto */
+    "CustomerBirthDate": "string",                                      /* Data de Nascimento do Cliente */
+    "CustomerPjIe": "string",                                           /* Inscrição Estadual*/                             
+    "OrderStatus": "string",                                            /* Obrigatório: VER REGRAS ACIMA*/
+    "InvoicedNumber": "string",                                         /* Numero da Nota Fiscal */
+    "InvoicedLine": 0,                                                  /* Série da Nota Fiscal */
+    "InvoicedIssueDate": "2016-06-23T10:59:50.381Z",                    /* Data de Emissão Faturamento */
+    "InvoicedKey": "string",                                            /* Chave da Nota Fiscal */
+    "InvoicedDanfeXml": "string",                                       /* Xml da Nota Fiscal */
+    "ShippedTrackingUrl": "string",                                     /* Url de Rastreio */
+    "ShippedTrackingProtocol": "string",                                /* Código de Rastreio*/
+    "ShippedEstimatedDelivery": "2016-06-23T10:59:50.381Z",             /* Data estimativa de Entrega */
+    "ShippedCarrierDate": "2016-06-23T10:59:50.381Z",                   /* Data Entrega a Transportadora */
+    "ShippedCarrierName": "string",                                     /* Nome da Transportadora */
+    "ShipmentExceptionObservation": "string",                           /* Observação em caso de falha*/
+    "ShipmentExceptionOccurrenceDate": "2016-06-23T10:59:50.381Z",      /* Data em que houve falha*/
+    "DeliveredDate": "2016-06-23T10:59:50.381Z",                        /* Data da Engrega ao cliente */
+    "Products": [
+    {                                                                   /* Lista de Produtos comprados */
+        "IdSku": "string",
+        "Quantity": 0,
+        "Price": "string",
+        "Freight": "string",
+        "Discount": "string"
+    }
+    ],
+    "Payments": [
+        {
+          "Name": "string",
+          "Installments": 0,
+          "Amount": 0
+        }
+    ]
+}
+</pre>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-12">
+                    <div class="spacePat25">
+                        <h4 class="boldusTotus600 ml15">Consultar vários Pedidos</h4>
+                    </div>
+                </div>
+
+                <div class="col-sm-12 spacePat10">
+                    <p class="text-justify ">Metodo: GET</p>
+                    <p class="text-justify ">Endpoint:(/api/Order)</p>
+                    <p class="text-justify ">Exemplo Response Body:</p>
+<pre class="spacePat">
+{
+    "Page": 1,
+    "PerPage": 1,
+    "Total": 16782,
+    "Orders": [
+    {
+        "IdOrder": "B2W-123456789",
+        "IdOrderMarketplace": "01-123456998",
+        "InsertedDate": "2016-06-09T13:00:05.057",
+        "PurchasedDate": "2016-06-09T12:46:26",
+        "ApprovedDate": "2016-06-09T13:04:28",
+        "UpdatedDate": "2016-06-09T12:54:25",
+        "MarketplaceName": "B2W",
+        "StoreName": "SHOPTIME",
+        "UpdatedMarketplaceStatus": true,
+        "InsertedErp": true,
+        "EstimatedDeliveryDate": "2016-06-22T00:00:00",
+        "CustomerPfCpf": "123456",
+        "CustomerPfName": "Pato Donalds da Silva Quack",
+        "CustomerPjCnpj": null,
+        "CustomerPjCorporatename": null,
+        "DeliveryAddressStreet": "Rua Patinhas Milinhoario",
+        "DeliveryAddressAdditionalInfo": "casa 1",
+        "DeliveryAddressZipcode": "112233",
+        "DeliveryAddressNeighborhood": "Bairro Cidade",
+        "DeliveryAddressCity": "Cidade",
+        "DeliveryAddressReference": null,
+        "DeliveryAddressState": "SP",
+        "DeliveryAddressNumber": "247",
+        "TelephoneMainNumber": "2233558899",
+        "TelephoneSecundaryNumber": "1122558855",
+        "TelephoneBusinessNumber": "22558899",
+        "TotalAmount": "82,11",
+        "TotalFreight": "47,34",
+        "TotalDiscount": "0,0",
+        "CustomerBirthDate": null,
+        "CustomerPjIe": null,
+        "OrderStatus": "DELIVERED",
+        "InvoicedNumber": "00111122",
+        "InvoicedLine": 1,
+        "InvoicedIssueDate": "2016-06-09T16:44:17.93",
+        "InvoicedKey": "1111111111111111111111111111111111111111111111",
+        "InvoicedDanfeXml": "",
+        "ShippedTrackingUrl": "",
+        "ShippedTrackingProtocol": "",
+        "ShippedEstimatedDelivery": "2016-06-22T00:00:00",
+        "ShippedCarrierDate": "2016-06-10T09:30:03.42",
+        "ShippedCarrierName": "Total",
+        "ShipmentExceptionObservation": null,
+        "ShipmentExceptionOccurrenceDate": null,
+        "DeliveredDate": "2016-06-14T23:29:15.08",
+        "Products": [
+        {
+            "IdSku": "1111111",
+            "Quantity": 1,
+            "Price": "13,31",
+            "Freight": "2,25",
+            "Discount": "0,0"
+        },
+        {
+            "IdSku": "2222222",
+            "Quantity": 1,
+            "Price": "10,73",
+            "Freight": "22,55",
+            "Discount": "0,0"
+        }
+        ],
+        "Payments": [
+            {
+              "Name": "string",
+              "Installments": 0,
+              "Amount": 0
+            }
+        ]
+    }
+    ]
+}
+</pre>
+                </div>
+
+
+                <div class="col-sm-12">
+                    <div class="spacePat25">
+                        <h4 class="boldusTotus600 ml15">Consultar um pedido</h4>
+                    </div>
+                </div>
+
+                <div class="col-sm-12 spacePat10">
+                    <p class="text-justify ">Metodo: GET</p>
+                    <p class="text-justify ">Endpoint:(/api/Order/{id})</p>
+                    <p class="text-justify ">Exemplo Response Body:</p>
+<pre class="spacePat">
+{
+    "IdOrder": "B2W-123456789",
+    "IdOrderMarketplace": "01-123456998",
+    "InsertedDate": "2016-06-09T13:00:05.057",
+    "PurchasedDate": "2016-06-09T12:46:26",
+    "ApprovedDate": "2016-06-09T13:04:28",
+    "UpdatedDate": "2016-06-09T12:54:25",
+    "MarketplaceName": "B2W",
+    "StoreName": "SHOPTIME",
+    "UpdatedMarketplaceStatus": true,
+    "InsertedErp": true,
+    "EstimatedDeliveryDate": "2016-06-22T00:00:00",
+    "CustomerPfCpf": "123456",
+    "CustomerPfName": "Pato Donalds da Silva Quack",
+    "CustomerPjCnpj": null,
+    "CustomerPjCorporatename": null,
+    "DeliveryAddressStreet": "Rua Patinhas Milinhoario",
+    "DeliveryAddressAdditionalInfo": "casa 1",
+    "DeliveryAddressZipcode": "112233",
+    "DeliveryAddressNeighborhood": "Bairro Cidade",
+    "DeliveryAddressCity": "Cidade",
+    "DeliveryAddressReference": null,
+    "DeliveryAddressState": "SP",
+    "DeliveryAddressNumber": "247",
+    "TelephoneMainNumber": "2233558899",
+    "TelephoneSecundaryNumber": "1122558855",
+    "TelephoneBusinessNumber": "22558899",
+    "TotalAmount": "82,11",
+    "TotalFreight": "47,34",
+    "TotalDiscount": "0,0",
+    "CustomerBirthDate": null,
+    "CustomerPjIe": null,
+    "OrderStatus": "DELIVERED",
+    "InvoicedNumber": "00111122",
+    "InvoicedLine": 1,
+    "InvoicedIssueDate": "2016-06-09T16:44:17.93",
+    "InvoicedKey": "1111111111111111111111111111111111111111111111",
+    "InvoicedDanfeXml": "",
+    "ShippedTrackingUrl": "",
+    "ShippedTrackingProtocol": "",
+    "ShippedEstimatedDelivery": "2016-06-22T00:00:00",
+    "ShippedCarrierDate": "2016-06-10T09:30:03.42",
+    "ShippedCarrierName": "Total",
+    "ShipmentExceptionObservation": null,
+    "ShipmentExceptionOccurrenceDate": null,
+    "DeliveredDate": "2016-06-14T23:29:15.08",
+    "Products": [
+    {
+        "IdSku": "1111111",
+        "Quantity": 1,
+        "Price": "13,31",
+        "Freight": "2,25",
+        "Discount": "0,0"
+    },
+    {
+        "IdSku": "2222222",
+        "Quantity": 1,
+        "Price": "10,73",
+        "Freight": "22,55",
+        "Discount": "0,0"
+    }
+    ],
+    "Payments": [
+        {
+          "Name": "string",
+          "Installments": 0,
+          "Amount": 0
+        }
+    ]
+}
+</pre>
+                </div>
+            </div>
+
+            <div class="spacePat"></div>
+            <div class="spacePat"></div>
+            <div class="col-sm-12">
+                <div class="spacePat25">
+                    <h4 class="boldusTotus600 ml15"><strong>OrderQueue</strong></h4>
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <div class="spacePat25">
+                    <h4 class="boldusTotus600 ml15">Recuperar novos pedidos e atualizações de status provenientes do Marketplace</h4>
+                </div>
+            </div>
+
+            <div class="col-sm-12 spacePat10">
+                <p class="text-justify ">Metodo: GET</p>
+                <p class="text-justify ">Endpoint:(/api/OrderQueue})</p>
+                <p class="text-justify ">Exemplo Response Body:</p>
+<pre class="spacePat">
+{
+  "Total": 0,
+  "OrderQueues": [
+    {
+      "Id": 0,
+      "IdOrder": "string",
+      "IdOrderMarketplace": "string",
+      "InsertedDate": "2017-05-17T20:09:59.426Z",
+      "OrderStatus": "string"
+    }
+  ]
+}
+</pre>
+            </div>
+
+
+            <div class="col-sm-12">
+                <div class="spacePat25">
+                    <h4 class="boldusTotus600 ml15">Este método insere os Pedidos que foram consumidos da fila.</h4>
+                </div>
+            </div>
+
+            <div class="col-sm-12 spacePat10">
+                <p class="text-justify ">Metodo: PUT</p>
+                <p class="text-justify ">Endpoint:(/api/OrderQueue})</p>
+                <p class="text-justify ">Exemplo do parametro ordersVm:</p>
+                <pre class="spacePat">
+                [
+                  {
+                    "Id": 0
+                  },
+                    {
+                    "Id": 1
+                  }
+                ]
+                </pre>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+        </div>
+    </div>
+</div>
+<div class="spacePat"></div>
+
+
+
+        <div id="int-msg" class="affix" style="z-index:900; left:25px; bottom:7px; width:96%;"></div>
+    </div>
+
+    <style>
+        #subscribeButton {
+            margin: 18px 0;
+        }
+
+            #subscribeButton a {
+                padding: 0 !important;
+                color: #fff;
+            }
+
+        @media screen and (max-width: 825px) {
+            #subscribeButton {
+                margin: 0 15px 18px;
+            }
+        }
+    </style>
+
+    <script src="../scripts/bootstrap.min.js"></script>
+    <script src="../scripts/modernizr-2.6.2.js"></script>
+    <script>
+        function OnSuccessFormContact(response) {
+            console.log("OnSuccessFormContact");
+            setTimeout(function () {
+                $("#formResponse > .boxLoader").css("display", "none");
+                $("#formResponse > .boxRespostaSucesso").css("display", "block");
+            }, 3000);
+        }
+
+
+
+        function OnFailureFormContact(response) {
+            console.log("OnFailureFormContact");
+            $("#formResponse > .boxLoader").css("display", "none");
+            $("#formResponse").css("display", "none");
+            $("#formContatos").css("display", "block");
+
+        }
+
+        function OnBeginFormContact() {
+            console.log("OnBeginFormContact");
+            $("#contactForm").css("display", "none");
+            $("#formResponse").css("display", "block");
+            $("#formResponse > .boxLoader").css("display", "block");
+        }
+
+        function showMessageData(data, type) {
+            var randowClass = Math.floor(Math.random() * 100);
+            $("#int-msg").append('<div style=" box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23); border: none; height: 100px; font-size: 18px; margin-top: 10px; display:none;" class="intg-animated intg-slideInLeft intg-msg-data-' + randowClass + ' alert alert-dismissable text-center mb0 ' + type + '"><strong><span id="resp-int-msg-Dest"></strong></span></div>');
+            $(".intg-msg-data-" + randowClass + " #resp-int-msg-Dest").empty().html(data);
+            $(".intg-msg-data-" + randowClass).fadeIn(300);
+            setTimeout(function () {
+                //Mensagem
+                $(".intg-msg-data-" + randowClass).fadeOut("slow", function () {
+                    $(".intg-msg-data-" + randowClass).remove();
+                });
+            }, 6000);
+        }
+
+    </script>
+</body>
+
+<!-- Mirrored from in.integracommerce.com.br/Documentation/Orders by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 26 Apr 2025 19:00:32 GMT -->
+</html>
